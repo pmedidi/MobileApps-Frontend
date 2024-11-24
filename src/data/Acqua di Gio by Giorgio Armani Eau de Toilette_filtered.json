@@ -1,0 +1,22 @@
+[
+    {
+        "fragrance_id": "f8eec30c-96f7-432e-8a4c-9f090a3b42ea",
+        "title": "Giorgio Armani Acqua Di Gio Eau de Toilette",
+        "price": "$67.49",
+        "link": "https://www.walgreens.com/store/c/giorgio-armani-acqua-di-gio-eau-de-toilette/ID=300434651-product",
+        "source": "Walgreens.com",
+        "rating": 4.8,
+        "reviews": 6100,
+        "thumbnail": "https://serpapi.com/searches/67215de976079d9baf773f10/images/7053427e189f96f530b47fa23038d141b41dc41876dfe0a9e94afec37458649f.webp"
+    },
+    {
+        "fragrance_id": "d3a89705-1428-4f7c-a52d-e5eb1bc0b646",
+        "title": "Acqua Di Gio Giorgio Armani Eau De Toilette Spray",
+        "price": "$49.99",
+        "link": "https://www.walmart.com/ip/ACQUA-DI-GIO-by-Giorgio-Armani-Eau-De-Toilette-Spray-3-3-oz-For-Men/712521451?wmlspartner=wlpa&selectedSellerId=101181566",
+        "source": "Walmart - S.N. Watches INC.",
+        "rating": 4.8,
+        "reviews": 11000,
+        "thumbnail": "https://serpapi.com/searches/67215de976079d9baf773f10/images/7053427e189f96f530b47fa23038d141582edc2e383be158459360d6edacf7aa.webp"
+    }
+]
