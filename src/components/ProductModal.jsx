@@ -275,7 +275,8 @@ import {
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
-import { track } from '@vercel/analytics'; // Import track function
+import { analytics } from '../firebaseConfig'; // Import analytics
+import { logEvent } from 'firebase/analytics'; // Import logEvent
 
 const credibleKeywords = ['Amazon', "Macy's", 'Walmart', 'Nordstrom', 'Sephora', 'Ulta'];
 
@@ -320,10 +321,10 @@ const ProductModal = ({ open, onClose, fragrance, user }) => {
 
     setNewComment('');
 
-    // Track add comment event
-    track('add_comment', {
-      event_category: 'Comment',
-      event_label: selectedOption.source,
+    // Log add comment event
+    logEvent(analytics, 'add_comment', {
+      fragrance_id: fragrance.fragrance_id,
+      option_source: selectedOption.source,
     });
   };
 
@@ -339,10 +340,10 @@ const ProductModal = ({ open, onClose, fragrance, user }) => {
       return { ...prevCommentsMap, [optionKey]: updatedComments };
     });
 
-    // Track upvote event
-    track('upvote_comment', {
-      event_category: 'Comment',
-      event_label: optionKey,
+    // Log upvote event
+    logEvent(analytics, 'upvote_comment', {
+      option_key: optionKey,
+      comment_id: commentId,
     });
   };
 
@@ -358,10 +359,10 @@ const ProductModal = ({ open, onClose, fragrance, user }) => {
       return { ...prevCommentsMap, [optionKey]: updatedComments };
     });
 
-    // Track downvote event
-    track('downvote_comment', {
-      event_category: 'Comment',
-      event_label: optionKey,
+    // Log downvote event
+    logEvent(analytics, 'downvote_comment', {
+      option_key: optionKey,
+      comment_id: commentId,
     });
   };
 
@@ -451,8 +452,8 @@ const ProductModal = ({ open, onClose, fragrance, user }) => {
                   target="_blank"
                   style={{ marginTop: '0.5rem', marginRight: '0.5rem' }}
                   onClick={() => {
-                    // Track 'Buy Now' click event
-                    track('buy_now_click', {
+                    // Log 'Buy Now' click event
+                    logEvent(analytics, 'buy_now_click', {
                       event_category: 'Fragrance',
                       event_label: option.source,
                     });
@@ -466,8 +467,8 @@ const ProductModal = ({ open, onClose, fragrance, user }) => {
                   color="primary"
                   onClick={() => {
                     setSelectedOptionIndex(index);
-                    // Track 'View Comments' event
-                    track('view_comments', {
+                    // Log 'View Comments' event
+                    logEvent(analytics, 'view_comments', {
                       event_category: 'Fragrance',
                       event_label: option.source,
                     });
