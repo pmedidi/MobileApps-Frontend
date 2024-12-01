@@ -3,7 +3,7 @@ import { Box, IconButton } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-
+ //push
 const BottomNavigationBar = ({ view, handleNavigation, user, handleSignIn, handleSignOut }) => {
   return (
     <Box
