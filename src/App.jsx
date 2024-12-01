@@ -278,14 +278,11 @@ import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import CologneCard from './components/CologneCard';
 import ProductModal from './components/ProductModal';
-import { auth } from './firebaseConfig'; // Import auth from your Firebase config
+import { auth, analytics } from './firebaseConfig'; // Import auth and analytics from your Firebase config
 import { GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import RouteChangeTracker from './RouteChangeTracker'; // Import the RouteChangeTracker
-import Home from './pages/Home'; // Assume you have a Home component
-import BookmarksPage from './pages/BookmarksPage'; // Assume you have a BookmarksPage component
-import { analytics } from './firebaseConfig'; // Import analytics
 import { logEvent } from 'firebase/analytics'; // Import logEvent
 
 const App = () => {
@@ -387,6 +384,7 @@ const App = () => {
     logEvent(analytics, 'navigation', {
       page,
     });
+    setDrawerOpen(false); // Close the drawer after navigation
   };
 
   const handleSignIn = () => {
@@ -463,22 +461,22 @@ const App = () => {
             <List>
               <ListItem
                 button
+                component={Link}
+                to="/"
                 onClick={() => {
                   handleNavigation('explore');
                 }}
-                component="a"
-                href="/"
               >
                 <ListItemText primary="Explore" />
               </ListItem>
               <Divider />
               <ListItem
                 button
+                component={Link}
+                to="/bookmarks"
                 onClick={() => {
                   handleNavigation('bookmarks');
                 }}
-                component="a"
-                href="/bookmarks"
               >
                 <ListItemText primary="Bookmarks" />
               </ListItem>
@@ -505,7 +503,11 @@ const App = () => {
                     placeholder="Search..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    onKeyPress={handleSearch}
+                    onKeyPress={(e) => {
+                      if (e.key === 'Enter') {
+                        handleSearch(e);
+                      }
+                    }}
                     style={{ marginLeft: '8px', flex: 1, color: '#333' }}
                   />
                   <IconButton onClick={handleSearch}>
