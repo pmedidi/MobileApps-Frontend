@@ -281,8 +281,7 @@ import ProductModal from './components/ProductModal';
 import { auth } from './firebaseConfig';
 import { GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth';
 import { useAuthState } from 'react-firebase-hooks/auth';
-
-// Removed ReactGA import since we're using window.gtag
+import { Analytics, track } from '@vercel/analytics/react'; // Import Analytics and track
 
 const App = () => {
   const [allFragrances, setAllFragrances] = useState([]);
@@ -294,15 +293,6 @@ const App = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [selectedFragrance, setSelectedFragrance] = useState(null);
   const [user] = useAuthState(auth);
-
-  useEffect(() => {
-    // Send initial pageview event to Google Analytics
-    if (window.gtag) {
-      window.gtag('config', 'G-0474Y38NDZ', {
-        page_path: window.location.pathname,
-      });
-    }
-  }, []);
 
   useEffect(() => {
     const loadFragrances = async () => {
@@ -344,12 +334,10 @@ const App = () => {
       );
       setFilteredResults(results);
 
-      // Track search event
-      if (window.gtag) {
-        window.gtag('event', 'search', {
-          search_term: searchTerm,
-        });
-      }
+      // Track search event using Vercel Analytics
+      track('search', {
+        search_term: searchTerm,
+      });
     }
   };
 
@@ -360,12 +348,10 @@ const App = () => {
       );
 
       // Track bookmark event
-      if (window.gtag) {
-        window.gtag('event', isBookmarked ? 'remove_bookmark' : 'add_bookmark', {
-          event_category: 'Bookmark',
-          event_label: fragrance.title,
-        });
-      }
+      track(isBookmarked ? 'remove_bookmark' : 'add_bookmark', {
+        fragrance_id: fragrance.fragrance_id,
+        title: fragrance.title,
+      });
 
       if (isBookmarked) {
         // Remove from bookmarks if already bookmarked
@@ -393,12 +379,9 @@ const App = () => {
     setDrawerOpen(false);
 
     // Track navigation event
-    if (window.gtag) {
-      window.gtag('event', 'navigation', {
-        event_category: 'Navigation',
-        event_label: page,
-      });
-    }
+    track('navigation', {
+      page,
+    });
   };
 
   const handleSignIn = () => {
@@ -406,32 +389,26 @@ const App = () => {
     signInWithPopup(auth, provider);
 
     // Track sign-in event
-    if (window.gtag) {
-      window.gtag('event', 'login', {
-        method: 'Google',
-      });
-    }
+    track('login', {
+      method: 'Google',
+    });
   };
 
   const handleSignOut = () => {
     signOut(auth);
 
     // Track sign-out event
-    if (window.gtag) {
-      window.gtag('event', 'logout');
-    }
+    track('logout');
   };
 
   const openProductModal = (fragrance) => {
     setSelectedFragrance(fragrance);
 
     // Track opening of product modal
-    if (window.gtag) {
-      window.gtag('event', 'select_content', {
-        content_type: 'fragrance',
-        item_id: fragrance.fragrance_id,
-      });
-    }
+    track('select_content', {
+      content_type: 'fragrance',
+      item_id: fragrance.fragrance_id,
+    });
   };
 
   const closeProductModal = () => {
@@ -439,134 +416,138 @@ const App = () => {
   };
 
   return (
-    <Container
-      style={{ padding: '1rem', backgroundColor: '#B7AEDC', minHeight: '100vh' }}
-    >
-      {/* Header */}
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        mb={2}
+    <>
+      <Container
+        style={{ padding: '1rem', backgroundColor: '#B7AEDC', minHeight: '100vh' }}
       >
-        <IconButton onClick={toggleDrawer(true)}>
-          <MenuIcon />
-        </IconButton>
-        <Typography variant="h6" style={{ fontWeight: 'bold', color: '#000' }}>
-          {view === 'explore' ? 'Scent Search' : 'Bookmarks'}
-        </Typography>
-        <IconButton onClick={user ? handleSignOut : handleSignIn}>
-          <AccountCircleIcon />
-        </IconButton>
-      </Box>
-
-      {/* Drawer for Navigation */}
-      <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer(false)}>
-        <Box
-          role="presentation"
-          onClick={toggleDrawer(false)}
-          onKeyDown={toggleDrawer(false)}
-          style={{ width: 250 }}
-        >
-          <List>
-            <ListItem button onClick={() => handleNavigation('explore')}>
-              <ListItemText primary="Explore" />
-            </ListItem>
-            <Divider />
-            <ListItem button onClick={() => handleNavigation('bookmarks')}>
-              <ListItemText primary="Bookmarks" />
-            </ListItem>
-          </List>
-        </Box>
-      </Drawer>
-
-      {/* Search Bar */}
-      {view === 'explore' && (
+        {/* Header */}
         <Box
           display="flex"
+          justifyContent="space-between"
           alignItems="center"
-          mt={2}
-          mb={3}
-          p={1}
-          style={{ backgroundColor: '#e0e0e0', borderRadius: '12px' }}
+          mb={2}
         >
-          <SearchIcon style={{ color: '#9e9e9e' }} />
-          <InputBase
-            placeholder="Search..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            onKeyPress={handleSearch}
-            style={{ marginLeft: '8px', flex: 1, color: '#333' }}
-          />
-          <IconButton onClick={handleSearch}>
-            <SearchIcon />
+          <IconButton onClick={toggleDrawer(true)}>
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h6" style={{ fontWeight: 'bold', color: '#000' }}>
+            {view === 'explore' ? 'Scent Search' : 'Bookmarks'}
+          </Typography>
+          <IconButton onClick={user ? handleSignOut : handleSignIn}>
+            <AccountCircleIcon />
           </IconButton>
         </Box>
-      )}
 
-      {/* Display Explore or Bookmarks Based on View */}
-      {view === 'explore' ? (
-        <>
-          <Typography
-            variant="h6"
-            gutterBottom
-            style={{ fontWeight: 'bold', color: '#333' }}
+        {/* Drawer for Navigation */}
+        <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer(false)}>
+          <Box
+            role="presentation"
+            onClick={toggleDrawer(false)}
+            onKeyDown={toggleDrawer(false)}
+            style={{ width: 250 }}
           >
-            Explore
-          </Typography>
-          <Box display="flex" flexWrap="wrap">
-            {(searchTerm ? filteredResults : fragrances).map((fragrance) => (
-              <CologneCard
-                key={fragrance.fragrance_id}
-                fragrance={fragrance}
-                onBookmark={addToBookmarks}
-                isBookmarked={bookmarks.some(
-                  (item) => item.fragrance_id === fragrance.fragrance_id
-                )}
-                onClick={() => openProductModal(fragrance)}
-              />
-            ))}
+            <List>
+              <ListItem button onClick={() => handleNavigation('explore')}>
+                <ListItemText primary="Explore" />
+              </ListItem>
+              <Divider />
+              <ListItem button onClick={() => handleNavigation('bookmarks')}>
+                <ListItemText primary="Bookmarks" />
+              </ListItem>
+            </List>
           </Box>
-        </>
-      ) : (
-        <>
-          <Typography
-            variant="h6"
-            gutterBottom
-            style={{ fontWeight: 'bold', color: '#333' }}
+        </Drawer>
+
+        {/* Search Bar */}
+        {view === 'explore' && (
+          <Box
+            display="flex"
+            alignItems="center"
+            mt={2}
+            mb={3}
+            p={1}
+            style={{ backgroundColor: '#e0e0e0', borderRadius: '12px' }}
           >
-            Bookmarks
-          </Typography>
-          <Box display="flex" flexWrap="wrap">
-            {bookmarks.length > 0 ? (
-              bookmarks.map((fragrance) => (
+            <SearchIcon style={{ color: '#9e9e9e' }} />
+            <InputBase
+              placeholder="Search..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              onKeyPress={handleSearch}
+              style={{ marginLeft: '8px', flex: 1, color: '#333' }}
+            />
+            <IconButton onClick={handleSearch}>
+              <SearchIcon />
+            </IconButton>
+          </Box>
+        )}
+
+        {/* Display Explore or Bookmarks Based on View */}
+        {view === 'explore' ? (
+          <>
+            <Typography
+              variant="h6"
+              gutterBottom
+              style={{ fontWeight: 'bold', color: '#333' }}
+            >
+              Explore
+            </Typography>
+            <Box display="flex" flexWrap="wrap">
+              {(searchTerm ? filteredResults : fragrances).map((fragrance) => (
                 <CologneCard
                   key={fragrance.fragrance_id}
                   fragrance={fragrance}
                   onBookmark={addToBookmarks}
-                  isBookmarked={true}
+                  isBookmarked={bookmarks.some(
+                    (item) => item.fragrance_id === fragrance.fragrance_id
+                  )}
                   onClick={() => openProductModal(fragrance)}
                 />
-              ))
-            ) : (
-              <Typography variant="body1" style={{ color: '#888' }}>
-                No bookmarks yet.
-              </Typography>
-            )}
-          </Box>
-        </>
-      )}
+              ))}
+            </Box>
+          </>
+        ) : (
+          <>
+            <Typography
+              variant="h6"
+              gutterBottom
+              style={{ fontWeight: 'bold', color: '#333' }}
+            >
+              Bookmarks
+            </Typography>
+            <Box display="flex" flexWrap="wrap">
+              {bookmarks.length > 0 ? (
+                bookmarks.map((fragrance) => (
+                  <CologneCard
+                    key={fragrance.fragrance_id}
+                    fragrance={fragrance}
+                    onBookmark={addToBookmarks}
+                    isBookmarked={true}
+                    onClick={() => openProductModal(fragrance)}
+                  />
+                ))
+              ) : (
+                <Typography variant="body1" style={{ color: '#888' }}>
+                  No bookmarks yet.
+                </Typography>
+              )}
+            </Box>
+          </>
+        )}
 
-      {/* Product Modal */}
-      {selectedFragrance && (
-        <ProductModal
-          open={!!selectedFragrance}
-          onClose={closeProductModal}
-          fragrance={selectedFragrance}
-          user={user}
-        />
-      )}
-    </Container>
+        {/* Product Modal */}
+        {selectedFragrance && (
+          <ProductModal
+            open={!!selectedFragrance}
+            onClose={closeProductModal}
+            fragrance={selectedFragrance}
+            user={user}
+          />
+        )}
+      </Container>
+      {/* Include the Analytics component */}
+      <Analytics />
+    </>
   );
 };
 

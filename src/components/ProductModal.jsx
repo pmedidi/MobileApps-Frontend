@@ -275,6 +275,7 @@ import {
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
+import { track } from '@vercel/analytics'; // Import track function
 
 const credibleKeywords = ['Amazon', "Macy's", 'Walmart', 'Nordstrom', 'Sephora', 'Ulta'];
 
@@ -320,12 +321,10 @@ const ProductModal = ({ open, onClose, fragrance, user }) => {
     setNewComment('');
 
     // Track add comment event
-    if (window.gtag) {
-      window.gtag('event', 'add_comment', {
-        event_category: 'Comment',
-        event_label: selectedOption.source,
-      });
-    }
+    track('add_comment', {
+      event_category: 'Comment',
+      event_label: selectedOption.source,
+    });
   };
 
   // Handle upvoting a comment
@@ -341,12 +340,10 @@ const ProductModal = ({ open, onClose, fragrance, user }) => {
     });
 
     // Track upvote event
-    if (window.gtag) {
-      window.gtag('event', 'upvote_comment', {
-        event_category: 'Comment',
-        event_label: optionKey,
-      });
-    }
+    track('upvote_comment', {
+      event_category: 'Comment',
+      event_label: optionKey,
+    });
   };
 
   // Handle downvoting a comment
@@ -362,12 +359,10 @@ const ProductModal = ({ open, onClose, fragrance, user }) => {
     });
 
     // Track downvote event
-    if (window.gtag) {
-      window.gtag('event', 'downvote_comment', {
-        event_category: 'Comment',
-        event_label: optionKey,
-      });
-    }
+    track('downvote_comment', {
+      event_category: 'Comment',
+      event_label: optionKey,
+    });
   };
 
   return (
@@ -457,12 +452,10 @@ const ProductModal = ({ open, onClose, fragrance, user }) => {
                   style={{ marginTop: '0.5rem', marginRight: '0.5rem' }}
                   onClick={() => {
                     // Track 'Buy Now' click event
-                    if (window.gtag) {
-                      window.gtag('event', 'buy_now_click', {
-                        event_category: 'Fragrance',
-                        event_label: option.source,
-                      });
-                    }
+                    track('buy_now_click', {
+                      event_category: 'Fragrance',
+                      event_label: option.source,
+                    });
                   }}
                 >
                   Buy Now
@@ -474,12 +467,10 @@ const ProductModal = ({ open, onClose, fragrance, user }) => {
                   onClick={() => {
                     setSelectedOptionIndex(index);
                     // Track 'View Comments' event
-                    if (window.gtag) {
-                      window.gtag('event', 'view_comments', {
-                        event_category: 'Fragrance',
-                        event_label: option.source,
-                      });
-                    }
+                    track('view_comments', {
+                      event_category: 'Fragrance',
+                      event_label: option.source,
+                    });
                   }}
                   style={{ marginTop: '0.5rem' }}
                 >
