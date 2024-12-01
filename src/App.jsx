@@ -259,7 +259,7 @@
 
 
 
-// App.jsx
+// src/App.jsx
 import React, { useState, useEffect } from 'react';
 import {
   Container,
@@ -278,12 +278,12 @@ import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import CologneCard from './components/CologneCard';
 import ProductModal from './components/ProductModal';
-import { auth, analytics } from './firebaseConfig'; // Import auth and analytics from your Firebase config
+import { auth, analytics } from './firebaseConfig'; // Import auth and analytics from Firebase config
 import { GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import RouteChangeTracker from './RouteChangeTracker'; // Import the RouteChangeTracker
-import { logEvent } from 'firebase/analytics'; // Import logEvent
+import RouteChangeTracker from './RouteChangeTracker'; // Ensure this file exists and is correctly named
+import { logEvent } from 'firebase/analytics';
 
 const App = () => {
   const [allFragrances, setAllFragrances] = useState([]);
