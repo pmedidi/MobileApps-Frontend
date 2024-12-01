@@ -101,7 +101,6 @@
 
 
 
-
 // src/components/ProductModal.jsx
 import React, { useState, useEffect } from 'react';
 import { Modal, Box, Typography, Button, TextField, IconButton } from '@mui/material';
@@ -117,23 +116,20 @@ const ProductModal = ({ open, onClose, fragrance, user }) => {
   const [newComment, setNewComment] = useState('');
 
   useEffect(() => {
-    // Reset selected option and new comment when modal opens/closes
     if (open) {
       setSelectedOptionIndex(null);
       setNewComment('');
     }
   }, [open]);
 
-  // Handle adding a new comment
   const handleAddComment = () => {
     if (newComment.trim() === '') return;
 
     const selectedOption = fragrance.allFragrances[selectedOptionIndex];
     const optionKey = selectedOption.link;
 
-    // Create a new comment object
     const newCommentObj = {
-      id: Date.now(), // Using timestamp as a temporary ID
+      id: Date.now(),
       text: newComment,
       upvotes: 0,
       downvotes: 0,
@@ -141,7 +137,6 @@ const ProductModal = ({ open, onClose, fragrance, user }) => {
       userName: user ? user.displayName || 'Anonymous' : 'Anonymous',
     };
 
-    // Update comments map
     setCommentsMap((prevCommentsMap) => {
       const existingComments = prevCommentsMap[optionKey] || [];
       return {
@@ -153,7 +148,6 @@ const ProductModal = ({ open, onClose, fragrance, user }) => {
     setNewComment('');
   };
 
-  // Handle upvoting a comment
   const handleUpvote = (optionKey, commentId) => {
     setCommentsMap((prevCommentsMap) => {
       const updatedComments = prevCommentsMap[optionKey].map((comment) => {
@@ -166,7 +160,6 @@ const ProductModal = ({ open, onClose, fragrance, user }) => {
     });
   };
 
-  // Handle downvoting a comment
   const handleDownvote = (optionKey, commentId) => {
     setCommentsMap((prevCommentsMap) => {
       const updatedComments = prevCommentsMap[optionKey].map((comment) => {
@@ -184,25 +177,29 @@ const ProductModal = ({ open, onClose, fragrance, user }) => {
       <Box
         style={{
           backgroundColor: 'white',
-          padding: '1rem',
-          maxWidth: '500px',
+          padding: '1.5rem',
+          maxWidth: '600px',
           margin: '50px auto',
-          borderRadius: '8px',
+          borderRadius: '16px',
+          boxShadow: '0px 6px 15px rgba(0, 0, 0, 0.2)',
           maxHeight: '80vh',
           overflowY: 'auto',
         }}
       >
         <Typography
           variant="h6"
-          style={{ fontWeight: 'bold', color: '#333', marginBottom: '1rem' }}
+          style={{
+            fontWeight: 'bold',
+            color: '#333',
+            marginBottom: '1rem',
+            textAlign: 'center',
+          }}
         >
           {fragrance.title}
         </Typography>
 
-        {/* Display list of options */}
         {fragrance.allFragrances &&
           fragrance.allFragrances.map((option, index) => {
-            // Check if the option's source is credible
             const isCredible = credibleKeywords.some((keyword) =>
               option.source.toLowerCase().includes(keyword.toLowerCase())
             );
@@ -213,9 +210,11 @@ const ProductModal = ({ open, onClose, fragrance, user }) => {
                 mt={2}
                 p={1}
                 style={{
-                  border: '1px solid #ccc',
-                  borderRadius: '8px',
+                  border: '1px solid #ddd',
+                  borderRadius: '12px',
                   marginBottom: '1rem',
+                  backgroundColor: isCredible ? '#e8f5e9' : '#f9f9f9',
+                  boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.1)',
                 }}
               >
                 <Typography
@@ -225,10 +224,10 @@ const ProductModal = ({ open, onClose, fragrance, user }) => {
                     color: '#333',
                     display: 'flex',
                     alignItems: 'center',
+                    marginBottom: '0.5rem',
                   }}
                 >
                   {option.source}
-                  {/* Verified Symbol */}
                   {isCredible && (
                     <Box
                       display="flex"
@@ -251,42 +250,51 @@ const ProductModal = ({ open, onClose, fragrance, user }) => {
                 <Typography variant="body2" style={{ color: '#555' }}>
                   Price: {option.price}
                 </Typography>
-                {/* Add reviews if available */}
                 {option.reviews && (
                   <Typography variant="body2" style={{ color: '#555' }}>
                     Reviews: {option.reviews}
                   </Typography>
                 )}
-                {/* Button to open the link */}
-                <Button
-                  variant="contained"
-                  color="primary"
-                  href={option.link}
-                  target="_blank"
-                  style={{ marginTop: '0.5rem', marginRight: '0.5rem' }}
-                >
-                  Buy Now
-                </Button>
-                {/* Button to view comments for this option */}
-                <Button
-                  variant="outlined"
-                  color="primary"
-                  onClick={() => setSelectedOptionIndex(index)}
-                  style={{ marginTop: '0.5rem' }}
-                >
-                  View Comments
-                </Button>
+                <Box mt={1}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    href={option.link}
+                    target="_blank"
+                    style={{
+                      marginRight: '0.5rem',
+                      borderRadius: '20px',
+                    }}
+                  >
+                    Buy Now
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    onClick={() => setSelectedOptionIndex(index)}
+                    style={{
+                      borderRadius: '20px',
+                    }}
+                  >
+                    View Comments
+                  </Button>
+                </Box>
               </Box>
             );
           })}
 
-        {/* Comments Section */}
         {selectedOptionIndex !== null && (
           <Box mt={4}>
-            <Typography variant="h6" style={{ fontWeight: 'bold', color: '#333' }}>
+            <Typography
+              variant="h6"
+              style={{
+                fontWeight: 'bold',
+                color: '#333',
+                textAlign: 'center',
+              }}
+            >
               Community Chat
             </Typography>
-            {/* Add New Comment */}
             <Box mt={2}>
               <TextField
                 label="Add a comment"
@@ -296,17 +304,20 @@ const ProductModal = ({ open, onClose, fragrance, user }) => {
                 variant="outlined"
                 value={newComment}
                 onChange={(e) => setNewComment(e.target.value)}
+                style={{ borderRadius: '8px' }}
               />
               <Button
                 variant="contained"
                 color="primary"
                 onClick={handleAddComment}
-                style={{ marginTop: '0.5rem' }}
+                style={{
+                  marginTop: '0.5rem',
+                  borderRadius: '20px',
+                }}
               >
                 Post Comment
               </Button>
             </Box>
-            {/* Comments List */}
             <Box mt={2}>
               {(() => {
                 const selectedOption = fragrance.allFragrances[selectedOptionIndex];
@@ -319,11 +330,15 @@ const ProductModal = ({ open, onClose, fragrance, user }) => {
                       key={comment.id}
                       mt={1}
                       p={1}
-                      style={{ border: '1px solid #ccc', borderRadius: '8px' }}
+                      style={{
+                        border: '1px solid #ccc',
+                        borderRadius: '8px',
+                        marginBottom: '0.5rem',
+                      }}
                     >
                       <Typography
                         variant="body2"
-                        style={{ fontWeight: 'bold', color: '#000' }} // Changed color to black
+                        style={{ fontWeight: 'bold', color: '#000' }}
                       >
                         {comment.userName}
                       </Typography>
@@ -363,3 +378,4 @@ const ProductModal = ({ open, onClose, fragrance, user }) => {
 };
 
 export default ProductModal;
+

@@ -1,3 +1,4 @@
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
@@ -18,25 +19,59 @@
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
 .card {
   padding: 2em;
+  border-radius: 12px; /* Rounded corners for cards */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center; /* Centering text */
+  transition: transform 0.2s; /* Hover effect */
+}
+.card:hover {
+  transform: translateY(-5px);
 }
 
-.read-the-docs {
-  color: #888;
+.button {
+  border-radius: 20px; /* Rounded pill-shaped buttons */
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  background-color: #4caf50; /* Different background color */
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+.button:hover {
+  background-color: #45a049; /* Slightly darker on hover */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.search-bar {
+  margin: 1em 0;
+  padding: 0.5em;
+  border-radius: 10px; /* Rounded search bar */
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.scroll-container {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding-bottom: 1rem;
+  scrollbar-width: none; /* For Firefox */
+}
+
+.scroll-container::-webkit-scrollbar {
+  display: none; /* For Chrome, Safari, and Opera */
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  .button {
+    background-color: #f9f9f9;
+  }
 }

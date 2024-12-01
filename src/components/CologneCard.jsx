@@ -116,10 +116,10 @@
 
 
 
-
-// src/components/CologneCard.jsx
 import React from 'react';
-import { Box, Typography, Button } from '@mui/material';
+import { Box, Typography, IconButton } from '@mui/material';
+import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
+import BookmarkIcon from '@mui/icons-material/Bookmark';
 
 const CologneCard = ({ fragrance, onBookmark, isBookmarked, onClick }) => {
   return (
@@ -128,7 +128,7 @@ const CologneCard = ({ fragrance, onBookmark, isBookmarked, onClick }) => {
         width: '150px',
         padding: '1rem',
         backgroundColor: '#fff',
-        borderRadius: '16px',
+        borderRadius: '20px', // Slightly rounder corners
         boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
         textAlign: 'center',
         margin: '0.5rem',
@@ -137,22 +137,36 @@ const CologneCard = ({ fragrance, onBookmark, isBookmarked, onClick }) => {
         justifyContent: 'space-between',
         height: '250px',
         overflow: 'hidden',
+        position: 'relative', // For positioning the bookmark button
+        transition: 'transform 0.2s, box-shadow 0.2s', // Add hover effect transition
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.transform = 'translateY(-5px)';
+        e.currentTarget.style.boxShadow = '0px 6px 14px rgba(0, 0, 0, 0.15)';
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.transform = 'translateY(0)';
+        e.currentTarget.style.boxShadow = '0px 4px 12px rgba(0, 0, 0, 0.1)';
       }}
     >
-      {/* Cologne Name at the Top */}
-      <Typography
-        variant="subtitle1"
+      {/* Circular Bookmark Button */}
+      <IconButton
+        onClick={() => onBookmark(fragrance)}
         style={{
-          fontWeight: 'bold',
-          color: '#333',
-          fontSize: '0.9rem',
-          textOverflow: 'ellipsis',
-          whiteSpace: 'nowrap',
-          overflow: 'hidden',
+          position: 'absolute',
+          top: '10px',
+          right: '10px',
+          backgroundColor: isBookmarked ? 'green' : '#fff',
+          color: isBookmarked ? '#fff' : '#3f51b5',
+          border: '1px solid #ccc',
+          width: '32px',
+          height: '32px',
+          boxShadow: '0px 2px 6px rgba(0, 0, 0, 0.1)',
+          transition: 'background-color 0.3s ease',
         }}
       >
-        {fragrance.title}
-      </Typography>
+        {isBookmarked ? <BookmarkIcon /> : <BookmarkBorderIcon />}
+      </IconButton>
 
       {/* Cologne Image */}
       <Box
@@ -162,31 +176,36 @@ const CologneCard = ({ fragrance, onBookmark, isBookmarked, onClick }) => {
         height="100px"
         style={{
           objectFit: 'cover',
-          borderRadius: '8px',
+          borderRadius: '50%', // Circular image for a new visual style
           margin: '0.5rem 0',
           cursor: 'pointer',
+          border: '2px solid #ddd', // Add border around the image
         }}
         onClick={onClick}
       />
 
-      {/* Bookmark Button */}
-      {onBookmark && (
-        <Button
-          onClick={() => onBookmark(fragrance)}
-          variant="contained"
+      {/* Cologne Name */}
+      <Box
+        style={{
+          textAlign: 'center',
+        }}
+      >
+        <Typography
+          variant="subtitle1"
           style={{
-            marginTop: '0.5rem',
             fontWeight: 'bold',
-            backgroundColor: isBookmarked ? 'green' : '#3f51b5',
-            color: 'white',
-            fontSize: '0.75rem',
+            color: '#333',
+            fontSize: '0.9rem',
+            whiteSpace: 'normal',
+            overflowWrap: 'break-word', // Ensures text wraps
           }}
         >
-          {isBookmarked ? 'Bookmarked' : 'Bookmark'}
-        </Button>
-      )}
+          {fragrance.title}
+        </Typography>
+      </Box>
     </Box>
   );
 };
 
 export default CologneCard;
+
