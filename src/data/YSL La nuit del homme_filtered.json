@@ -7,7 +7,7 @@
         "source": "FragranceNet.com",
         "rating": 4.7,
         "reviews": 11000,
-        "thumbnail": "https://serpapi.com/searches/67214c2aeda5f58d025a489a/images/584093905e03211040e1bc7ad78cb9ef90b9c6a2b9c50f9e498dd5db15149678.webp"
+        "thumbnail": "https://m.media-amazon.com/images/I/41uFwLbFnJL._SX300_SY300_QL70_FMwebp_.jpg"
     },
     {
         "fragrance_id": "2f701dad-6fcc-40fc-bcdc-d0becec35ebd",
@@ -17,7 +17,7 @@
         "source": "Amazon.com",
         "rating": 4.6,
         "reviews": 1700,
-        "thumbnail": "https://serpapi.com/searches/67214c2aeda5f58d025a489a/images/584093905e03211040e1bc7ad78cb9efe2e6bd551b3102d6749f5a1f02a98149.webp"
+        "thumbnail": "https://m.media-amazon.com/images/I/41uFwLbFnJL._SX300_SY300_QL70_FMwebp_.jpg"
     },
     {
         "fragrance_id": "759d2228-cb85-4014-afa2-1834f609ff72",
@@ -27,6 +27,6 @@
         "source": "BuyBeauty",
         "rating": 4.6,
         "reviews": 1700,
-        "thumbnail": "https://serpapi.com/searches/67214c2aeda5f58d025a489a/images/584093905e03211040e1bc7ad78cb9ef702fc7d5d19306f7b804417ac7b401da.webp"
+        "thumbnail": "https://m.media-amazon.com/images/I/41uFwLbFnJL._SX300_SY300_QL70_FMwebp_.jpg"
     }
 ]

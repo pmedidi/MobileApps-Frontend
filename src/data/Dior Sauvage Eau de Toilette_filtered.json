@@ -7,8 +7,78 @@
         "source": "eBay - griswolds-this-n-that",
         "rating": 4.5,
         "reviews": 881,
-        "thumbnail": "https://serpapi.com/searches/67215b0572e5c4748b84dcef/images/613f295978132ca46fb271bb4ac382c6be40dd11f6d4b12b2b9ae7280c90894e.webp"
+        "thumbnail": "https://img.fragrancex.com/images/products/sku/small/73223m.webp"
     },
+    {
+        "title": "Dior Sauvage Eau de Toilette Spray for Men",
+        "price": "$124.16",
+        "link": "https://www.amazon.com/s?k=Sauvage&crid=28J6Y0MEHKMUS&sprefix=sauvage+%2Caps%2C161&ref=nb_sb_noss_2",
+        "source": "Amazon",
+        "rating": 4.7,
+        "reviews": 6404,
+        "thumbnail": "https://img.fragrancex.com/images/products/sku/small/73223m.webp",
+        "fragrance_id": "Dior_Sauvage"
+      },
+      {
+        "title": "Dior Sauvage Eau De Toilette Spray Refillable",
+        "price": "$129.99",
+        "link": "https://www.fragrancenet.com/cologne/christian-dior/dior-sauvage/edt#283046",
+        "source": "FragranceNet.com",
+        "rating": null,
+        "reviews": 269,
+        "thumbnail": "https://img.fragrancex.com/images/products/sku/small/73223m.webp",
+        "fragrance_id": "Dior_Sauvage"
+      },
+      {
+        "title": "Sauvage by Christian Dior",
+        "price": "$123.55",
+        "link": "https://www.fragrancex.com/search/search_results?stext=Sauvage+",
+        "source": "FragranceX",
+        "rating": 4.5,
+        "reviews": 511,
+        "thumbnail": "https://img.fragrancex.com/images/products/sku/small/73223m.webp",
+        "fragrance_id": "Dior_Sauvage"
+      },
+      {
+        "title": "Sauvage Eau de Toilette Spray for Men by Christian Dior",
+        "price": "$91.95",
+        "link": "https://perfumania.com/search?q=Sauvage",
+        "source": "Perfumania",
+        "rating": null,
+        "reviews": 2,
+        "thumbnail": "https://img.fragrancex.com/images/products/sku/small/73223m.webp",
+        "fragrance_id": "Dior_Sauvage"
+      },
+      {
+        "title": "DIOR Sauvage Eau de Toilette",
+        "price": "$112.00",
+        "link": "https://www.sephora.com/search?keyword=Sauvage",
+        "source": "Sephora",
+        "rating": 4.5,
+        "reviews": 734,
+        "thumbnail": "https://img.fragrancex.com/images/products/sku/small/73223m.webp",
+        "fragrance_id": "Dior_Sauvage"
+      },
+      {
+        "title": "Sauvage by Christian Dior Eau De Toilette Spray",
+        "price": "$178.35",
+        "link": "https://theperfumespot.com/sauvage-by-christian-dior-6-8-oz-edp-spray-for-men/?pu=null",
+        "source": "ThePerfumeSpot",
+        "rating": 5.0,
+        "reviews": 1,
+        "thumbnail": "https://img.fragrancex.com/images/products/sku/small/73223m.webp",
+        "fragrance_id": "Dior_Sauvage"
+      },
+      {
+        "title": "Dior Sauvage Eau de Toilette, Cologne for Men",
+        "price": "$66.99",
+        "link": "https://www.walmart.com/search?q=Sauvage+",
+        "source": "Walmart",
+        "rating": 4.5,
+        "reviews": 1864,
+        "thumbnail": "https://img.fragrancex.com/images/products/sku/small/73223m.webp",
+        "fragrance_id": "Dior_Sauvage"
+      },
     {
         "fragrance_id": "fc2570ab-0031-4905-8b6a-cd32ac86b62e",
         "title": "Sauvage by Christian Dior Eau de Toilette Spray 3.4 oz",
@@ -17,6 +87,6 @@
         "source": "Mercari",
         "rating": 4.7,
         "reviews": 4900,
-        "thumbnail": "https://serpapi.com/searches/67215b0572e5c4748b84dcef/images/613f295978132ca46fb271bb4ac382c65aa64bedc159e9acfb7859c17c35ff98.webp"
+        "thumbnail": "https://img.fragrancex.com/images/products/sku/small/73223m.webp"
     }
 ]

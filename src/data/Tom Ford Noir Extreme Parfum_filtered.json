@@ -7,7 +7,7 @@
         "source": "Mercari",
         "rating": "Not Available",
         "reviews": "Not Available",
-        "thumbnail": "https://serpapi.com/searches/67214df8e8735ab0c9211ef3/images/ac36d1559cbb82eb735da39879c29cafa7dc1e55cde951e53e2d7f94e39a0087.jpeg"
+        "thumbnail": "https://m.media-amazon.com/images/I/41XAK0ApzQL._SX300_SY300_QL70_FMwebp_.jpg"
     },
     {
         "fragrance_id": "e4b3e304-f83a-4200-8ee4-0fc9af6a3b14",
@@ -17,7 +17,7 @@
         "source": "Mercari",
         "rating": 4.6,
         "reviews": 5000,
-        "thumbnail": "https://serpapi.com/searches/67214df8e8735ab0c9211ef3/images/ac36d1559cbb82eb735da39879c29caf9611d16897b1781a56942c2f0f1f7934.jpeg"
+        "thumbnail": "https://m.media-amazon.com/images/I/41XAK0ApzQL._SX300_SY300_QL70_FMwebp_.jpg"
     },
     {
         "fragrance_id": "0ca38208-52c4-4a1c-aa00-6d654f7f4361",
@@ -27,6 +27,6 @@
         "source": "Mercari",
         "rating": 4.6,
         "reviews": 1500,
-        "thumbnail": "https://serpapi.com/searches/67214df8e8735ab0c9211ef3/images/ac36d1559cbb82eb735da39879c29caf75b693c3587f63ee9501fbd583c261fb.jpeg"
+        "thumbnail": "https://m.media-amazon.com/images/I/41XAK0ApzQL._SX300_SY300_QL70_FMwebp_.jpg"
     }
 ]

@@ -1,0 +1,52 @@
+[
+    {
+        "title": "Creed Aventus Eau de Parfum Spray 3.3 oz",
+        "price": "$495.00",
+        "link": "https://www.amazon.com/Creed-Aventus-Cologne-Luxury-Fragrance/dp/B0D63C3KM6",
+        "source": "Amazon",
+        "rating": 4.2,
+        "reviews": 2007,
+        "thumbnail": "https://m.media-amazon.com/images/I/71nY6hb7uuL._SX522_.jpg",
+        "fragrance_id": "Creed_Aventus"
+    },
+    {
+        "title": "Creed Aventus Eau de Parfum 3.3 oz",
+        "price": "$495.00",
+        "link": "https://www.bloomingdales.com/shop/product/creed-aventus-3.3-oz.?ID=1210163",
+        "source": "Bloomingdale's",
+        "rating": null,
+        "reviews": null,
+        "thumbnail": "https://m.media-amazon.com/images/I/71nY6hb7uuL._SX522_.jpg",
+        "fragrance_id": "Creed_Aventus"
+    },
+    {
+        "title": "Creed Aventus Eau de Parfum 3.3 oz",
+        "price": "$495.00",
+        "link": "https://www.macys.com/shop/product/creed-aventus-3.3-oz.?ID=337906",
+        "source": "Macy's",
+        "rating": null,
+        "reviews": null,
+        "thumbnail": "https://m.media-amazon.com/images/I/71nY6hb7uuL._SX522_.jpg",
+        "fragrance_id": "Creed_Aventus"
+    },
+    {
+        "title": "Creed Aventus Eau de Parfum Spray 3.3 oz",
+        "price": "$459.99",
+        "link": "https://www.fragrancenet.com/cologne/creed/creed-aventus/eau-de-parfum",
+        "source": "FragranceNet.com",
+        "rating": null,
+        "reviews": 339,
+        "thumbnail": "https://m.media-amazon.com/images/I/71nY6hb7uuL._SX522_.jpg",
+        "fragrance_id": "Creed_Aventus"
+    },
+    {
+        "title": "Creed Aventus Eau de Parfum 3.3 oz",
+        "price": "$365.00",
+        "link": "https://www.dillards.com/p/creed-aventus/511113778",
+        "source": "Dillard's",
+        "rating": null,
+        "reviews": 162,
+        "thumbnail": "https://m.media-amazon.com/images/I/71nY6hb7uuL._SX522_.jpg",
+        "fragrance_id": "Creed_Aventus"
+    }
+]
