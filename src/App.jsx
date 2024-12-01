@@ -1,3 +1,4 @@
+// // App.jsx
 // import React, { useState, useEffect } from 'react';
 // import {
 //   Container,
@@ -20,8 +21,6 @@
 // import { GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth';
 // import { useAuthState } from 'react-firebase-hooks/auth';
 
-
-
 // const App = () => {
 //   const [allFragrances, setAllFragrances] = useState([]);
 //   const [fragrances, setFragrances] = useState([]);
@@ -30,7 +29,7 @@
 //   const [filteredResults, setFilteredResults] = useState([]);
 //   const [view, setView] = useState('explore');
 //   const [drawerOpen, setDrawerOpen] = useState(false);
-//   const [selectedFragrance, setSelectedFragrance] = useState(null); // State for selected fragrance
+//   const [selectedFragrance, setSelectedFragrance] = useState(null);
 //   const [user] = useAuthState(auth);
 
 //   useEffect(() => {
@@ -41,7 +40,14 @@
 
 //         for (const path in modules) {
 //           const module = await modules[path]();
-//           loadedFragrances.push(...module.default);
+//           const fragrancesFromModule = module.default;
+//           if (fragrancesFromModule.length > 0) {
+//             // For each JSON file, pick the first fragrance
+//             const cologneFragrance = fragrancesFromModule[0];
+//             // Store the rest of the fragrances in a property
+//             cologneFragrance.allFragrances = fragrancesFromModule;
+//             loadedFragrances.push(cologneFragrance);
+//           }
 //         }
 
 //         setAllFragrances(loadedFragrances);
@@ -51,7 +57,7 @@
 //           .slice(0, 3);
 //         setFragrances(randomFragrances);
 //       } catch (error) {
-//         console.error("Error loading fragrance data:", error);
+//         console.error('Error loading fragrance data:', error);
 //       }
 //     };
 
@@ -70,15 +76,26 @@
 
 //   const addToBookmarks = (fragrance) => {
 //     setBookmarks((prevBookmarks) => {
-//       if (prevBookmarks.find((item) => item.fragrance_id === fragrance.fragrance_id)) {
-//         return prevBookmarks;
+//       if (
+//         prevBookmarks.find(
+//           (item) => item.fragrance_id === fragrance.fragrance_id
+//         )
+//       ) {
+//         // Remove from bookmarks if already bookmarked
+//         return prevBookmarks.filter(
+//           (item) => item.fragrance_id !== fragrance.fragrance_id
+//         );
 //       }
+//       // Add to bookmarks if not already bookmarked
 //       return [...prevBookmarks, fragrance];
 //     });
 //   };
 
 //   const toggleDrawer = (open) => (event) => {
-//     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+//     if (
+//       event.type === 'keydown' &&
+//       (event.key === 'Tab' || event.key === 'Shift')
+//     ) {
 //       return;
 //     }
 //     setDrawerOpen(open);
@@ -107,9 +124,16 @@
 //   };
 
 //   return (
-//     <Container style={{ padding: '1rem', backgroundColor: '#f5f5f5', minHeight: '100vh' }}>
+//     <Container
+//       style={{ padding: '1rem', backgroundColor: '#B7AEDC', minHeight: '100vh' }}
+//     >
 //       {/* Header */}
-//       <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+//       <Box
+//         display="flex"
+//         justifyContent="space-between"
+//         alignItems="center"
+//         mb={2}
+//       >
 //         <IconButton onClick={toggleDrawer(true)}>
 //           <MenuIcon />
 //         </IconButton>
@@ -143,7 +167,14 @@
 
 //       {/* Search Bar */}
 //       {view === 'explore' && (
-//         <Box display="flex" alignItems="center" mt={2} mb={3} p={1} style={{ backgroundColor: '#e0e0e0', borderRadius: '12px' }}>
+//         <Box
+//           display="flex"
+//           alignItems="center"
+//           mt={2}
+//           mb={3}
+//           p={1}
+//           style={{ backgroundColor: '#e0e0e0', borderRadius: '12px' }}
+//         >
 //           <SearchIcon style={{ color: '#9e9e9e' }} />
 //           <InputBase
 //             placeholder="Search..."
@@ -161,16 +192,22 @@
 //       {/* Display Explore or Bookmarks Based on View */}
 //       {view === 'explore' ? (
 //         <>
-//           <Typography variant="h6" gutterBottom style={{ fontWeight: 'bold', color: '#333' }}>
+//           <Typography
+//             variant="h6"
+//             gutterBottom
+//             style={{ fontWeight: 'bold', color: '#333' }}
+//           >
 //             Explore
 //           </Typography>
-//           <Box className="scroll-container">
+//           <Box display="flex" flexWrap="wrap">
 //             {(searchTerm ? filteredResults : fragrances).map((fragrance) => (
 //               <CologneCard
 //                 key={fragrance.fragrance_id}
 //                 fragrance={fragrance}
 //                 onBookmark={addToBookmarks}
-//                 isBookmarked={bookmarks.some((item) => item.fragrance_id === fragrance.fragrance_id)}
+//                 isBookmarked={bookmarks.some(
+//                   (item) => item.fragrance_id === fragrance.fragrance_id
+//                 )}
 //                 onClick={() => openProductModal(fragrance)}
 //               />
 //             ))}
@@ -178,15 +215,20 @@
 //         </>
 //       ) : (
 //         <>
-//           <Typography variant="h6" gutterBottom style={{ fontWeight: 'bold', color: '#333' }}>
+//           <Typography
+//             variant="h6"
+//             gutterBottom
+//             style={{ fontWeight: 'bold', color: '#333' }}
+//           >
 //             Bookmarks
 //           </Typography>
-//           <Box className="scroll-container">
+//           <Box display="flex" flexWrap="wrap">
 //             {bookmarks.length > 0 ? (
 //               bookmarks.map((fragrance) => (
 //                 <CologneCard
 //                   key={fragrance.fragrance_id}
 //                   fragrance={fragrance}
+//                   onBookmark={addToBookmarks}
 //                   isBookmarked={true}
 //                   onClick={() => openProductModal(fragrance)}
 //                 />
@@ -216,6 +258,7 @@
 // export default App;
 
 
+
 // App.jsx
 import React, { useState, useEffect } from 'react';
 import {
@@ -239,6 +282,8 @@ import { auth } from './firebaseConfig';
 import { GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth';
 import { useAuthState } from 'react-firebase-hooks/auth';
 
+// Removed ReactGA import since we're using window.gtag
+
 const App = () => {
   const [allFragrances, setAllFragrances] = useState([]);
   const [fragrances, setFragrances] = useState([]);
@@ -249,6 +294,15 @@ const App = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [selectedFragrance, setSelectedFragrance] = useState(null);
   const [user] = useAuthState(auth);
+
+  useEffect(() => {
+    // Send initial pageview event to Google Analytics
+    if (window.gtag) {
+      window.gtag('config', 'G-0474Y38NDZ', {
+        page_path: window.location.pathname,
+      });
+    }
+  }, []);
 
   useEffect(() => {
     const loadFragrances = async () => {
@@ -289,16 +343,31 @@ const App = () => {
         fragrance.title.toLowerCase().includes(query)
       );
       setFilteredResults(results);
+
+      // Track search event
+      if (window.gtag) {
+        window.gtag('event', 'search', {
+          search_term: searchTerm,
+        });
+      }
     }
   };
 
   const addToBookmarks = (fragrance) => {
     setBookmarks((prevBookmarks) => {
-      if (
-        prevBookmarks.find(
-          (item) => item.fragrance_id === fragrance.fragrance_id
-        )
-      ) {
+      const isBookmarked = prevBookmarks.find(
+        (item) => item.fragrance_id === fragrance.fragrance_id
+      );
+
+      // Track bookmark event
+      if (window.gtag) {
+        window.gtag('event', isBookmarked ? 'remove_bookmark' : 'add_bookmark', {
+          event_category: 'Bookmark',
+          event_label: fragrance.title,
+        });
+      }
+
+      if (isBookmarked) {
         // Remove from bookmarks if already bookmarked
         return prevBookmarks.filter(
           (item) => item.fragrance_id !== fragrance.fragrance_id
@@ -322,19 +391,47 @@ const App = () => {
   const handleNavigation = (page) => {
     setView(page);
     setDrawerOpen(false);
+
+    // Track navigation event
+    if (window.gtag) {
+      window.gtag('event', 'navigation', {
+        event_category: 'Navigation',
+        event_label: page,
+      });
+    }
   };
 
   const handleSignIn = () => {
     const provider = new GoogleAuthProvider();
     signInWithPopup(auth, provider);
+
+    // Track sign-in event
+    if (window.gtag) {
+      window.gtag('event', 'login', {
+        method: 'Google',
+      });
+    }
   };
 
   const handleSignOut = () => {
     signOut(auth);
+
+    // Track sign-out event
+    if (window.gtag) {
+      window.gtag('event', 'logout');
+    }
   };
 
   const openProductModal = (fragrance) => {
     setSelectedFragrance(fragrance);
+
+    // Track opening of product modal
+    if (window.gtag) {
+      window.gtag('event', 'select_content', {
+        content_type: 'fragrance',
+        item_id: fragrance.fragrance_id,
+      });
+    }
   };
 
   const closeProductModal = () => {
@@ -474,6 +571,3 @@ const App = () => {
 };
 
 export default App;
-
-
-
