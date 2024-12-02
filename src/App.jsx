@@ -259,7 +259,7 @@
 
 
 
-// src/App.jsx
+// App.jsx
 import React, { useState, useEffect } from 'react';
 import {
   Container,
@@ -278,12 +278,10 @@ import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import CologneCard from './components/CologneCard';
 import ProductModal from './components/ProductModal';
-import { auth, analytics } from './firebaseConfig'; // Import auth and analytics from Firebase config
+import { auth, analytics } from './firebaseConfig'; // Import auth and analytics
 import { GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import RouteChangeTracker from './RouteChangeTracker'; // Ensure this file exists and is correctly named
-import { logEvent } from 'firebase/analytics';
+import { logEvent } from 'firebase/analytics'; // Import logEvent
 
 const App = () => {
   const [allFragrances, setAllFragrances] = useState([]);
@@ -291,6 +289,7 @@ const App = () => {
   const [bookmarks, setBookmarks] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredResults, setFilteredResults] = useState([]);
+  const [view, setView] = useState('explore');
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [selectedFragrance, setSelectedFragrance] = useState(null);
   const [user] = useAuthState(auth);
@@ -325,6 +324,12 @@ const App = () => {
     };
 
     loadFragrances();
+
+    // Log 'screen_view' event when the app loads
+    logEvent(analytics, 'screen_view', {
+      firebase_screen: 'Home',
+      firebase_screen_class: 'App',
+    });
   }, []);
 
   const handleSearch = (e) => {
@@ -380,11 +385,13 @@ const App = () => {
   };
 
   const handleNavigation = (page) => {
+    setView(page);
+    setDrawerOpen(false);
+
     // Log navigation event
     logEvent(analytics, 'navigation', {
       page,
     });
-    setDrawerOpen(false); // Close the drawer after navigation
   };
 
   const handleSignIn = () => {
@@ -427,161 +434,134 @@ const App = () => {
   };
 
   return (
-    <Router>
-      <RouteChangeTracker />
-      <Container
-        style={{ padding: '1rem', backgroundColor: '#B7AEDC', minHeight: '100vh' }}
+    <Container
+      style={{ padding: '1rem', backgroundColor: '#B7AEDC', minHeight: '100vh' }}
+    >
+      {/* Header */}
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        mb={2}
       >
-        {/* Header */}
+        <IconButton onClick={toggleDrawer(true)}>
+          <MenuIcon />
+        </IconButton>
+        <Typography variant="h6" style={{ fontWeight: 'bold', color: '#000' }}>
+          {view === 'explore' ? 'Scent Search' : 'Bookmarks'}
+        </Typography>
+        <IconButton onClick={user ? handleSignOut : handleSignIn}>
+          <AccountCircleIcon />
+        </IconButton>
+      </Box>
+
+      {/* Drawer for Navigation */}
+      <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer(false)}>
+        <Box
+          role="presentation"
+          onClick={toggleDrawer(false)}
+          onKeyDown={toggleDrawer(false)}
+          style={{ width: 250 }}
+        >
+          <List>
+            <ListItem button onClick={() => handleNavigation('explore')}>
+              <ListItemText primary="Explore" />
+            </ListItem>
+            <Divider />
+            <ListItem button onClick={() => handleNavigation('bookmarks')}>
+              <ListItemText primary="Bookmarks" />
+            </ListItem>
+          </List>
+        </Box>
+      </Drawer>
+
+      {/* Search Bar */}
+      {view === 'explore' && (
         <Box
           display="flex"
-          justifyContent="space-between"
           alignItems="center"
-          mb={2}
+          mt={2}
+          mb={3}
+          p={1}
+          style={{ backgroundColor: '#e0e0e0', borderRadius: '12px' }}
         >
-          <IconButton onClick={toggleDrawer(true)}>
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" style={{ fontWeight: 'bold', color: '#000' }}>
-            Scent Search
-          </Typography>
-          <IconButton onClick={user ? handleSignOut : handleSignIn}>
-            <AccountCircleIcon />
+          <SearchIcon style={{ color: '#9e9e9e' }} />
+          <InputBase
+            placeholder="Search..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            onKeyPress={handleSearch}
+            style={{ marginLeft: '8px', flex: 1, color: '#333' }}
+          />
+          <IconButton onClick={handleSearch}>
+            <SearchIcon />
           </IconButton>
         </Box>
+      )}
 
-        {/* Drawer for Navigation */}
-        <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer(false)}>
-          <Box
-            role="presentation"
-            onClick={toggleDrawer(false)}
-            onKeyDown={toggleDrawer(false)}
-            style={{ width: 250 }}
+      {/* Display Explore or Bookmarks Based on View */}
+      {view === 'explore' ? (
+        <>
+          <Typography
+            variant="h6"
+            gutterBottom
+            style={{ fontWeight: 'bold', color: '#333' }}
           >
-            <List>
-              <ListItem
-                button
-                component={Link}
-                to="/"
-                onClick={() => {
-                  handleNavigation('explore');
-                }}
-              >
-                <ListItemText primary="Explore" />
-              </ListItem>
-              <Divider />
-              <ListItem
-                button
-                component={Link}
-                to="/bookmarks"
-                onClick={() => {
-                  handleNavigation('bookmarks');
-                }}
-              >
-                <ListItemText primary="Bookmarks" />
-              </ListItem>
-            </List>
+            Explore
+          </Typography>
+          <Box display="flex" flexWrap="wrap">
+            {(searchTerm ? filteredResults : fragrances).map((fragrance) => (
+              <CologneCard
+                key={fragrance.fragrance_id}
+                fragrance={fragrance}
+                onBookmark={addToBookmarks}
+                isBookmarked={bookmarks.some(
+                  (item) => item.fragrance_id === fragrance.fragrance_id
+                )}
+                onClick={() => openProductModal(fragrance)}
+              />
+            ))}
           </Box>
-        </Drawer>
+        </>
+      ) : (
+        <>
+          <Typography
+            variant="h6"
+            gutterBottom
+            style={{ fontWeight: 'bold', color: '#333' }}
+          >
+            Bookmarks
+          </Typography>
+          <Box display="flex" flexWrap="wrap">
+            {bookmarks.length > 0 ? (
+              bookmarks.map((fragrance) => (
+                <CologneCard
+                  key={fragrance.fragrance_id}
+                  fragrance={fragrance}
+                  onBookmark={addToBookmarks}
+                  isBookmarked={true}
+                  onClick={() => openProductModal(fragrance)}
+                />
+              ))
+            ) : (
+              <Typography variant="body1" style={{ color: '#888' }}>
+                No bookmarks yet.
+              </Typography>
+            )}
+          </Box>
+        </>
+      )}
 
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <>
-                {/* Search Bar */}
-                <Box
-                  display="flex"
-                  alignItems="center"
-                  mt={2}
-                  mb={3}
-                  p={1}
-                  style={{ backgroundColor: '#e0e0e0', borderRadius: '12px' }}
-                >
-                  <SearchIcon style={{ color: '#9e9e9e' }} />
-                  <InputBase
-                    placeholder="Search..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    onKeyPress={(e) => {
-                      if (e.key === 'Enter') {
-                        handleSearch(e);
-                      }
-                    }}
-                    style={{ marginLeft: '8px', flex: 1, color: '#333' }}
-                  />
-                  <IconButton onClick={handleSearch}>
-                    <SearchIcon />
-                  </IconButton>
-                </Box>
-
-                <Typography
-                  variant="h6"
-                  gutterBottom
-                  style={{ fontWeight: 'bold', color: '#333' }}
-                >
-                  Explore
-                </Typography>
-                <Box display="flex" flexWrap="wrap">
-                  {(searchTerm ? filteredResults : fragrances).map((fragrance) => (
-                    <CologneCard
-                      key={fragrance.fragrance_id}
-                      fragrance={fragrance}
-                      onBookmark={addToBookmarks}
-                      isBookmarked={bookmarks.some(
-                        (item) => item.fragrance_id === fragrance.fragrance_id
-                      )}
-                      onClick={() => openProductModal(fragrance)}
-                    />
-                  ))}
-                </Box>
-              </>
-            }
-          />
-          <Route
-            path="/bookmarks"
-            element={
-              <>
-                <Typography
-                  variant="h6"
-                  gutterBottom
-                  style={{ fontWeight: 'bold', color: '#333' }}
-                >
-                  Bookmarks
-                </Typography>
-                <Box display="flex" flexWrap="wrap">
-                  {bookmarks.length > 0 ? (
-                    bookmarks.map((fragrance) => (
-                      <CologneCard
-                        key={fragrance.fragrance_id}
-                        fragrance={fragrance}
-                        onBookmark={addToBookmarks}
-                        isBookmarked={true}
-                        onClick={() => openProductModal(fragrance)}
-                      />
-                    ))
-                  ) : (
-                    <Typography variant="body1" style={{ color: '#888' }}>
-                      No bookmarks yet.
-                    </Typography>
-                  )}
-                </Box>
-              </>
-            }
-          />
-        </Routes>
-
-        {/* Product Modal */}
-        {selectedFragrance && (
-          <ProductModal
-            open={!!selectedFragrance}
-            onClose={closeProductModal}
-            fragrance={selectedFragrance}
-            user={user}
-          />
-        )}
-      </Container>
-    </Router>
+      {/* Product Modal */}
+      {selectedFragrance && (
+        <ProductModal
+          open={!!selectedFragrance}
+          onClose={closeProductModal}
+          fragrance={selectedFragrance}
+          user={user}
+        />
+      )}
+    </Container>
   );
 };
 
