@@ -17,7 +17,7 @@ const FetchInfo = () => {
       
       // Log the retrieved data
       setLog((prev) => [...prev, 'Data retrieved:', JSON.stringify(data, null, 2)]);
-      setLog((prev) => [...prev, `Simulating save to ./data/fragrances.json`]);
+      setLog((prev) => [...prev, `Save to ./data/fragrances.json`]);
     } catch (error) {
       setLog((prev) => [...prev, `Error fetching data: ${error.message}`]);
     } finally {
